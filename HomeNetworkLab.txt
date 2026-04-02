@@ -1,0 +1,40 @@
+Network Security Assessment Report
+Date: March 17, 2026
+Analyst: Travis
+Scope: Campus network segment 10.79.191.0/24
+Tools Used: Nmap 7.94, Wireshark
+
+1. Executive summary:
+A network scan and traffic analysis was performed on a residential network segment. 5 live hosts were discovered. The network appears to be managed infrastructure running MikroTik routing equipment. The local machine showed minimal exposure with only one open port detected.
+
+10.79.191.129
+Open Ports:
+53/tcp Low Risk - DNS server, the device is handling DNS lookups on my network 
+179/tcp Medium Risk- BGP, a routing protocol
+2000/tcp Low Risk - MikroTik bandwidth test server 
+
+10.79.191.148 
+5357/tcp Low Risk - HTTP, windows network discovery service. 
+99/100 ports are filtered on this IP, which means that the firewall is working.
+
+Wireshark Findings
+Capture Duration: ~2-3 minutes
+Interface: Wi-Fi (10.79.191.148)
+Filter Applied: DNS
+DNS:
+na.vg.ac.pvp.net - League of Legends NA game server
+lolstatic-a.akamihd.net - LoL static assetsapi-partner.spotify.com - spotify API
+search.brave.com - Brave browser
+www.google.com - Google lookup
+ev2-ring.msedge.net - Microsoft Edge background process
+ 
+2. Key Findings: 
+All DNS queries were transmitted in plaintext over port 53, meaning that any observer on the asme network could identify applications in use, browsing behavior, and active services without decrypting any traffic
+
+3. Recommendations: 
+Port 5357 on local machine should be disabled if file sharing is uncessary on residential network
+BGP exposure on router warrants monitoring
+Enable DNS over HTTPS (DoH) in Brave browser
+
+4. Conclusion:
+Network segment shows a well-managed infrastructure with appropriate firewall rules. The primary finding is unencrypted DNS traffic revealing application usage, which could be mitigated with DoH
